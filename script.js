@@ -17,8 +17,10 @@ todoForm.addEventListener('submit', (e) => {
 
     const content = document.createElement('div')
     content.classList.add('todo-content')
-    // content.innerHTML = `<input type="text" value="${contentValue}" readonly />`
-    content.innerHTML = `<textarea readonly rows="1" >${contentValue}</textarea>`
+
+    const textArea = document.createElement('textarea')
+    textArea.setAttribute('readonly', true)
+    textArea.textContent = contentValue
 
     const action = document.createElement('div')
     action.classList.add('action')
@@ -32,6 +34,8 @@ todoForm.addEventListener('submit', (e) => {
     action.appendChild(editBtn)
     action.appendChild(deleteBtn)
 
+    content.appendChild(textArea)
+
     todoItem.appendChild(check)
     todoItem.appendChild(content)
     todoItem.appendChild(action)
@@ -39,11 +43,10 @@ todoForm.addEventListener('submit', (e) => {
     todoList.appendChild(todoItem)
 
     check.addEventListener('change', () => {
-      content.firstChild.classList.toggle('striped')
+      textArea.classList.toggle('striped')
     })
 
     editBtn.addEventListener('click', () => {
-      const textArea = content.querySelector('textarea')
       textArea.removeAttribute('readonly')
       textArea.focus()
       textArea.addEventListener('blur', () =>
@@ -54,6 +57,9 @@ todoForm.addEventListener('submit', (e) => {
     deleteBtn.addEventListener('click', () => {
       todoItem.style.display = 'none'
     })
+
+    //auto height text area
+    textArea.style.height = `${textArea.scrollHeight}px`
   }
 
   e.target.reset()

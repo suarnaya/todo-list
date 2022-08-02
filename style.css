@@ -45,8 +45,9 @@ form input[type='text'] {
 
 .todo-content textarea {
   width: 100%;
-  resize: vertical;
-  height: auto;
+  resize: none;
+  overflow: hidden;
+  height: 18px;
   border: none;
 }
 
