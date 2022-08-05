@@ -43,9 +43,10 @@ todoForm.addEventListener('submit', (e) => {
         editBtn.addEventListener('click', () => {
             textArea.removeAttribute('readonly');
             textArea.focus();
-            textArea.addEventListener('blur', () =>
-                textArea.setAttribute('readonly', true)
-            );
+            textArea.addEventListener('blur', () => {
+                textArea.setAttribute('readonly', true);
+                textArea.style.height = `${textArea.scrollHeight}px`;
+            });
         });
 
         deleteBtn.addEventListener('click', () => {
