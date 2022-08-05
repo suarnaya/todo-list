@@ -1,69 +1,63 @@
-const todoForm = document.querySelector('#todo-form')
+const todoForm = document.querySelector('#todo-form');
 
 // print value ke todo- list
 todoForm.addEventListener('submit', (e) => {
-  e.preventDefault()
+    e.preventDefault();
 
-  const contentValue = e.target.elements.content.value
+    const contentValue = e.target.elements.content.value;
 
-  const printTodo = () => {
-    const todoList = document.querySelector('#todo-list')
+    const printTodo = () => {
+        const todoList = document.querySelector('#todo-list');
 
-    const todoItem = document.createElement('div')
-    todoItem.classList.add('todo-item')
+        const todoItem = document.createElement('div');
+        const check = document.createElement('input');
+        const content = document.createElement('div');
+        const textArea = document.createElement('textarea');
+        const action = document.createElement('div');
+        const editBtn = document.createElement('button');
+        const deleteBtn = document.createElement('button');
 
-    const check = document.createElement('input')
-    check.type = 'checkbox'
+        todoItem.classList.add('todo-item');
+        check.type = 'checkbox';
+        content.classList.add('todo-content');
+        textArea.setAttribute('readonly', true);
+        action.classList.add('action');
+        editBtn.textContent = 'edit';
+        deleteBtn.textContent = 'delete';
+        // add to textarea
+        textArea.textContent = contentValue.trim();
 
-    const content = document.createElement('div')
-    content.classList.add('todo-content')
+        action.appendChild(editBtn);
+        action.appendChild(deleteBtn);
+        content.appendChild(textArea);
+        todoItem.appendChild(check);
+        todoItem.appendChild(content);
+        todoItem.appendChild(action);
 
-    const textArea = document.createElement('textarea')
-    textArea.setAttribute('readonly', true)
-    textArea.textContent = contentValue
+        todoList.appendChild(todoItem);
 
-    const action = document.createElement('div')
-    action.classList.add('action')
+        check.addEventListener('change', () => {
+            textArea.classList.toggle('striped');
+        });
 
-    const editBtn = document.createElement('button')
-    editBtn.textContent = 'Edit'
+        editBtn.addEventListener('click', () => {
+            textArea.removeAttribute('readonly');
+            textArea.focus();
+            textArea.addEventListener('blur', () =>
+                textArea.setAttribute('readonly', true)
+            );
+        });
 
-    const deleteBtn = document.createElement('button')
-    deleteBtn.textContent = 'Delete'
+        deleteBtn.addEventListener('click', () => {
+            todoItem.style.display = 'none';
+        });
 
-    action.appendChild(editBtn)
-    action.appendChild(deleteBtn)
+        //auto height text area
+        textArea.style.height = `${textArea.scrollHeight}px`;
+    };
 
-    content.appendChild(textArea)
-
-    todoItem.appendChild(check)
-    todoItem.appendChild(content)
-    todoItem.appendChild(action)
-
-    todoList.appendChild(todoItem)
-
-    check.addEventListener('change', () => {
-      textArea.classList.toggle('striped')
-    })
-
-    editBtn.addEventListener('click', () => {
-      textArea.removeAttribute('readonly')
-      textArea.focus()
-      textArea.addEventListener('blur', () =>
-        textArea.setAttribute('readonly', true)
-      )
-    })
-
-    deleteBtn.addEventListener('click', () => {
-      todoItem.style.display = 'none'
-    })
-
-    //auto height text area
-    textArea.style.height = `${textArea.scrollHeight}px`
-  }
-
-  e.target.reset()
-  if (contentValue !== '') {
-    printTodo()
-  }
-})
+    e.target.reset();
+    if (contentValue.trim() !== '') {
+        printTodo();
+    }
+});
