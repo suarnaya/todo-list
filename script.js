@@ -1,64 +1,99 @@
-const todoForm = document.querySelector('#todo-form');
+window.addEventListener('load', () => {
+    todos = JSON.parse(localStorage.getItem('todos')) || [];
+    const todoForm = document.querySelector('#todo-form');
 
-// print value ke todo- list
-todoForm.addEventListener('submit', (e) => {
-    e.preventDefault();
+    // print value ke todo- list
+    todoForm.addEventListener('submit', (e) => {
+        e.preventDefault();
 
-    const contentValue = e.target.elements.content.value;
+        // create object, and store to todos array
+        const todo = {
+            content: e.target.elements.content.value,
+            done: false,
+        };
 
-    const printTodo = () => {
-        const todoList = document.querySelector('#todo-list');
+        todos.push(todo);
 
+        localStorage.setItem('todos', JSON.stringify(todos));
+
+        e.target.reset();
+
+        if (todo.content.trim() !== null) {
+            printTodo();
+        }
+    });
+
+    printTodo();
+});
+const printTodo = () => {
+    const todoList = document.querySelector('#todo-list');
+    todoList.innerHTML = '';
+
+    // looping array yang menerima parameter object todos
+    todos.forEach((todo) => {
         const todoItem = document.createElement('div');
         const check = document.createElement('input');
-        const content = document.createElement('div');
-        const textArea = document.createElement('textarea');
+        const container = document.createElement('div');
+        // const textArea = document.createElement('textarea');
         const action = document.createElement('div');
         const editBtn = document.createElement('button');
         const deleteBtn = document.createElement('button');
 
         todoItem.classList.add('todo-item');
         check.type = 'checkbox';
-        content.classList.add('todo-content');
-        textArea.setAttribute('readonly', true);
+        container.classList.add('content-wrapper');
         action.classList.add('action');
         editBtn.textContent = 'edit';
         deleteBtn.textContent = 'delete';
+        // textArea.setAttribute('readonly', true);
+
+        container.innerHTML = `<textarea readonly">${todo.content.trim()}</textarea>`;
+
+        // init check
+        check.checked = todo.done;
         // add to textarea
-        textArea.textContent = contentValue.trim();
+        // textArea.textContent = todo.content.trim();
 
         action.appendChild(editBtn);
         action.appendChild(deleteBtn);
-        content.appendChild(textArea);
         todoItem.appendChild(check);
-        todoItem.appendChild(content);
+        todoItem.appendChild(container);
         todoItem.appendChild(action);
 
         todoList.appendChild(todoItem);
 
-        check.addEventListener('change', () => {
-            textArea.classList.toggle('striped');
+        if (todo.done) container.classList.add('striped');
+
+        check.addEventListener('change', (e) => {
+            // save check condition to done property of todo object
+            todo.done = e.target.checked;
+            localStorage.setItem('todos', JSON.stringify(todos));
+
+            if (todo.done) container.classList.add('striped');
+            else container.classList.remove('striped');
+
+            printTodo();
         });
 
         editBtn.addEventListener('click', () => {
+            textArea = container.querySelector('textarea');
             textArea.removeAttribute('readonly');
             textArea.focus();
-            textArea.addEventListener('blur', () => {
+            textArea.addEventListener('blur', (e) => {
                 textArea.setAttribute('readonly', true);
-                textArea.style.height = `${textArea.scrollHeight}px`;
+                todo.content = e.target.value;
+                localStorage.setItem('todos', JSON.stringify(todos));
+                printTodo();
             });
+            // auto height text area
+            textArea.style.height = `${textArea.scrollHeight}px`;
         });
 
         deleteBtn.addEventListener('click', () => {
-            todoItem.style.display = 'none';
+            todos = todos.filter((t) => t != todo);
+            localStorage.setItem('todos', JSON.stringify(todos));
+            printTodo();
         });
-
-        //auto height text area
         textArea.style.height = `${textArea.scrollHeight}px`;
-    };
-
-    e.target.reset();
-    if (contentValue.trim() !== '') {
-        printTodo();
-    }
-});
+    });
+};
