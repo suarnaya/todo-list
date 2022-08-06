@@ -18,7 +18,7 @@ window.addEventListener('load', () => {
             return;
         }
 
-        todos.push(todo);
+        todos.unshift(todo);
         localStorage.setItem('todos', JSON.stringify(todos));
 
         e.target.reset();
