@@ -12,15 +12,17 @@ window.addEventListener('load', () => {
             done: false,
         };
 
-        todos.push(todo);
+        // if no value, do nothing
+        if (todo.content.trim() == '') {
+            e.target.reset();
+            return;
+        }
 
+        todos.push(todo);
         localStorage.setItem('todos', JSON.stringify(todos));
 
         e.target.reset();
-
-        if (todo.content.trim() !== null) {
-            printTodo();
-        }
+        printTodo();
     });
 
     printTodo();
@@ -34,7 +36,6 @@ const printTodo = () => {
         const todoItem = document.createElement('div');
         const check = document.createElement('input');
         const container = document.createElement('div');
-        // const textArea = document.createElement('textarea');
         const action = document.createElement('div');
         const editBtn = document.createElement('button');
         const deleteBtn = document.createElement('button');
@@ -45,14 +46,11 @@ const printTodo = () => {
         action.classList.add('action');
         editBtn.textContent = 'edit';
         deleteBtn.textContent = 'delete';
-        // textArea.setAttribute('readonly', true);
 
-        container.innerHTML = `<textarea readonly">${todo.content.trim()}</textarea>`;
+        container.innerHTML = `<textarea readonly>${todo.content.trim()}</textarea>`;
 
         // init check
         check.checked = todo.done;
-        // add to textarea
-        // textArea.textContent = todo.content.trim();
 
         action.appendChild(editBtn);
         action.appendChild(deleteBtn);
@@ -76,7 +74,7 @@ const printTodo = () => {
         });
 
         editBtn.addEventListener('click', () => {
-            textArea = container.querySelector('textarea');
+            const textArea = container.querySelector('textarea');
             textArea.removeAttribute('readonly');
             textArea.focus();
             textArea.addEventListener('blur', (e) => {
@@ -85,8 +83,11 @@ const printTodo = () => {
                 localStorage.setItem('todos', JSON.stringify(todos));
                 printTodo();
             });
-            // auto height text area
-            textArea.style.height = `${textArea.scrollHeight}px`;
+
+            // auto height text area when input
+            textArea.addEventListener('input', () => {
+                textArea.style.height = `${textArea.scrollHeight}px`;
+            });
         });
 
         deleteBtn.addEventListener('click', () => {
@@ -94,6 +95,9 @@ const printTodo = () => {
             localStorage.setItem('todos', JSON.stringify(todos));
             printTodo();
         });
+
+        // auto height textarea after blur event
+        const textArea = container.querySelector('textarea');
         textArea.style.height = `${textArea.scrollHeight}px`;
     });
 };
