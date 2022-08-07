@@ -35,28 +35,32 @@ const printTodo = () => {
     todos.forEach((todo) => {
         const todoItem = document.createElement('div');
         const check = document.createElement('input');
+        const checkOuter = document.createElement('label');
+        const checkMark = document.createElement('span');
         const container = document.createElement('div');
-        const action = document.createElement('div');
-        const editBtn = document.createElement('button');
-        const deleteBtn = document.createElement('button');
+        const editBtn = document.createElement('i');
+        const deleteBtn = document.createElement('i');
 
         todoItem.classList.add('todo-item');
         check.type = 'checkbox';
+        checkOuter.classList.add('check-outer');
+        checkMark.classList.add('checkmark');
         container.classList.add('content-wrapper');
-        action.classList.add('action');
-        editBtn.textContent = 'edit';
-        deleteBtn.textContent = 'delete';
+        editBtn.classList.add('fa-regular', 'fa-pen-to-square');
+        deleteBtn.classList.add('fa-regular', 'fa-trash-can');
 
         container.innerHTML = `<textarea readonly>${todo.content.trim()}</textarea>`;
 
         // init check
         check.checked = todo.done;
 
-        action.appendChild(editBtn);
-        action.appendChild(deleteBtn);
-        todoItem.appendChild(check);
+        checkOuter.appendChild(check);
+        checkOuter.appendChild(checkMark);
+        todoItem.appendChild(checkOuter);
         todoItem.appendChild(container);
-        todoItem.appendChild(action);
+        todoItem.appendChild(editBtn);
+        todoItem.appendChild(deleteBtn);
+        // todoItem.appendChild(action);
 
         todoList.appendChild(todoItem);
 

@@ -1,96 +1,222 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;500&display=swap');
+
 :root {
-    --dark: #666;
-    --bg: #eee;
-    --border: 1px var(--dark) solid;
+    --dark: hsl(155, 36%, 26%);
+    --green: hsl(155, 36%, 26%);
+    --green-hvr: hsl(155, 36%, 35%);
+    --bg: #f0f8f3;
+    --light: #fff;
+    --shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.08);
+    --border: 1px #2131266e solid;
 }
 
 * {
-    font-family: 'Lato', sans-serif;
+    font-family: 'Josefin Sans', sans-serif;
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
 body {
-    color: #000;
+    color: var(--dark);
     min-height: 95vh;
 }
 
 .container {
     max-width: 30rem;
+    min-height: 90vh;
     width: 95%;
-    margin: 1.5em auto;
-    border: var(--border);
-    border-radius: 1em;
-    padding: 2em;
+    margin: 0 auto;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    background-color: var(--bg);
+    box-shadow: var(--shadow);
+    border-radius: 1rem;
+    padding: 1rem;
 }
 
-h3 {
+h1 {
+    font-size: 2rem;
     text-align: center;
 }
 
 form {
     display: flex;
-    gap: 0.3rem;
-    margin-top: 0.5em;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    box-shadow: var(--shadow);
+    background-color: var(--light);
+    border-radius: 0.5rem;
 }
 
-form input[type='text'] {
+form input {
     width: 100%;
-    padding: 0.2em;
-    border-radius: 5px;
-    border: var(--border);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: none;
+    font-size: 1.25rem;
+    background-color: var(--light);
+    color: var(--green);
 }
 
-form input[type='submit'] {
-    padding: 0.2em 0.4em;
+form input:focus {
+    outline: var(--border);
+}
+
+form input::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: var(--green);
+    opacity: 1; /* Firefox */
+}
+
+form input:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: var(--green);
+}
+
+form input::-ms-input-placeholder {
+    /* Microsoft Edge */
+    color: var(--green);
+}
+
+form button {
+    background: none;
+    border: none;
+    margin-right: 0.5rem;
+}
+
+form button:focus {
+    outline: var(--border);
 }
 
 #todo-list {
-    margin-top: 2em;
+    margin-top: 2.5rem;
 }
 
 .todo-item {
-    border: var(--border);
-    padding: 1em;
+    padding: 0.5rem;
     display: flex;
-    align-items: flex-start;
-    gap: 0.3em;
-    margin-bottom: 0.5em;
-    border-radius: 0.5em;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow);
+    background-color: var(--light);
 }
 
-.todo-item input[type='checkbox'] {
-    margin-top: 4px;
+/* styling checkbox start */
+.check-outer {
+    position: relative;
+    margin-right: 5px;
+    width: 23px;
+    height: 23px;
 }
+
+/* Hide the browser's default checkbox */
+.check-outer input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 23px;
+    width: 23px;
+    /* background-color: #eee; */
+    border: 3px solid var(--green);
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* On mouse-over, add a grey background color */
+.check-outer:hover input ~ .checkmark {
+    border: 3px solid var(--green-hvr);
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+    content: '';
+    position: absolute;
+    display: none;
+}
+
+/* Show the checkmark when checked */
+.check-outer input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Style the checkmark/indicator */
+.check-outer .checkmark:after {
+    left: 5px;
+    top: 0;
+    width: 5px;
+    height: 10px;
+    border: solid var(--green);
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.check-outer:hover .checkmark:after {
+    border: solid var(--green-hvr);
+    border-width: 0 3px 3px 0;
+}
+
+/* style checkbox end */
 
 .content-wrapper {
     width: 100%;
+    display: grid;
+    place-items: center;
 }
 
 textarea {
     border-radius: 2px;
-    padding: 0.2em;
+    padding: 0.2rem;
     width: 100%;
     resize: none;
     overflow: hidden;
-    height: 1.6em;
+    height: 1rem;
     border: none;
+    font-size: 1.25rem;
+    color: var(--green);
+    line-height: 1.2rem;
 }
 
 textarea:focus {
     outline: var(--border);
 }
 
-.action {
-    display: flex;
-    gap: 0.3em;
-}
-
-.action button {
-    padding: 1px 0.5em;
-}
-
 .striped textarea {
     text-decoration: line-through;
+}
+
+.fa-regular {
+    color: var(--green);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.fa-regular:hover {
+    color: var(--green-hvr);
+}
+
+.author {
+    margin: 0 auto;
+    width: fit-content;
+}
+
+.author a {
+    text-decoration: none;
+    color: var(--dark);
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }
